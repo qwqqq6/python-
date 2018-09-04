@@ -23,6 +23,12 @@ class Ship():
         self.moving_right = False
         self.moving_left = False
 
+        #子弹设置
+        self.bullet_speed_factor = 1
+        self.bullet_width = 3
+        self.bullet_height = 15
+        self.bullet_color = 60, 60, 60
+
     def update(self):
         """根据移动标志调整飞船的位置"""
         if self.moving_right and self.rect.right < self.screen_rect.right:
