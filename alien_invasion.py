@@ -2,6 +2,7 @@ import sys
 import pygame
 
 from setting import Settings
+from ship import  Ship
 
 def run_game():
     # 初始化
@@ -9,6 +10,8 @@ def run_game():
     ai_settings = Settings()
     screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
+
+    ship = Ship(screen)
 
     # 开始游戏主循环
     while True:
@@ -20,6 +23,7 @@ def run_game():
 
         #重绘屏幕
         screen.fill(ai_settings.bg_color)
+        ship.blitme()
 
         # 最近绘制屏幕可见
         pygame.display.flip()
