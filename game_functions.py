@@ -66,11 +66,13 @@ def create_fleet(ai_settings, screen, ship, aliens):
         for alien_number in range(number_aliens_x):
             create_alien(ai_settings, screen, aliens, alien_number, row_number)
 
+
 def get_number_aliens_x(ai_settings, alien_width):
     """计算可以排列的外星人数量"""
     avaliable_space_x = ai_settings.screen_width - 2 * alien_width
     number_aliens_x = int(avaliable_space_x / (2 * alien_width))
     return number_aliens_x
+
 
 def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     """创建一个外星人并放在当前行"""
@@ -81,8 +83,29 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
     aliens.add(alien)
 
+
 def get_number_rows(ai_settings, ship_height, alien_height):
     """计算屏幕可以容纳多少行"""
     available_space_y = (ai_settings.screen_height - (3 * alien_height) - ship_height)
     number_rows = int(available_space_y / (2 * alien_height))
     return number_rows
+
+
+def update_aliens(ai_settings, aliens):
+    check_fleet_edges(ai_settings, aliens)
+    aliens.update()
+
+
+def check_fleet_edges(ai_settings, aliens):
+    """外星人到达边缘时采取措施"""
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(ai_settings, aliens)
+            break
+
+
+def change_fleet_direction(ai_settings, aliens):
+    """下移外星人并改变方向"""
+    for alien in aliens.sprites():
+        alien.rect.y += ai_settings.fleet_drop_speed
+    ai_settings.fleet_direction *= 1
