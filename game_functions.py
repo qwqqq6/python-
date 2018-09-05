@@ -110,4 +110,4 @@ def change_fleet_direction(ai_settings, aliens):
     """下移外星人并改变方向"""
     for alien in aliens.sprites():
         alien.rect.y += ai_settings.fleet_drop_speed
-    ai_settings.fleet_direction *= 1
+    ai_settings.fleet_direction *= -1
