@@ -44,8 +44,9 @@ def update_screen(ai_settings, screen, ship, aliens, bullets):
     ship.blitme()
     aliens.draw(screen)
 
-    #最近绘制的屏幕可见
+    # 最近绘制的屏幕可见
     pygame.display.flip()
+
 
 def update_bullets(bullets):
     """更新子弹位置，删除消失的子弹"""
@@ -55,13 +56,14 @@ def update_bullets(bullets):
             bullets.remove(bullet)
     print(len(bullets))
 
+
 def create_fleet(ai_settings, screen, ship, aliens):
     """创建外星人群"""
-    #计算可以排列的外星人数量
+    # 计算可以排列的外星人数量
     alien = Alien(ai_settings, screen)
     number_aliens_x = get_number_aliens_x(ai_settings, alien.rect.width)
     number_rows = get_number_rows(ai_settings, ship.rect.height, alien.rect.height)
-    #创建外星人
+    # 创建外星人
     for row_number in range(number_rows):
         for alien_number in range(number_aliens_x):
             create_alien(ai_settings, screen, aliens, alien_number, row_number)
