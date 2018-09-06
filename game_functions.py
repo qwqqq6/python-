@@ -3,6 +3,7 @@ import pygame
 from bullet import Bullet
 from alien import Alien
 
+
 def check_events(ai_settings, screen, ship, bullets):
     """响应按键和鼠标事件"""
     for event in pygame.event.get():
@@ -12,6 +13,8 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keydown_events(event, ai_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+
+
 def check_keydown_events(event, ai_settings, screen, ship, bullets):
     if event.key == pygame.K_d:
         ship.moving_right = True
@@ -22,10 +25,12 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
     elif event.key == pygame.K_q:
         sys.exit()
 
+
 def fire_bullet(ai_settings, screen, ship, bullets):
     if len(bullets) < ai_settings.bullet_allowed:
         new_bullet = Bullet(ai_settings, screen, ship)
         bullets.add(new_bullet)
+
 
 def check_keyup_events(event, ship):
     if event.key == pygame.K_d:
@@ -33,9 +38,10 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_a:
         ship.moving_left = False
 
+
 def update_screen(ai_settings, screen, ship, aliens, bullets):
     """更新屏幕上的图像"""
-    #每次循环重绘屏幕
+    # 每次循环重绘屏幕
     screen.fill(ai_settings.bg_color)
 
     for bullet in bullets.sprites():
@@ -48,13 +54,20 @@ def update_screen(ai_settings, screen, ship, aliens, bullets):
     pygame.display.flip()
 
 
-def update_bullets(bullets):
+def update_bullets(ai_settings, screen, ship, aliens, bullets):
     """更新子弹位置，删除消失的子弹"""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    print(len(bullets))
+    check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets)
+
+
+def check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets):
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if len(aliens) == 0:
+        bullets.empty()
+        create_fleet(ai_settings, screen, ship, aliens)
 
 
 def create_fleet(ai_settings, screen, ship, aliens):
@@ -93,9 +106,13 @@ def get_number_rows(ai_settings, ship_height, alien_height):
     return number_rows
 
 
-def update_aliens(ai_settings, aliens):
+def update_aliens(ai_settings, ship,  aliens):
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
+
+    # 检测外星人与飞船的碰撞
+    if pygame.sprite.spritecollideany(ship, aliens):
+        print("ship hit")
 
 
 def check_fleet_edges(ai_settings, aliens):
