@@ -1,5 +1,6 @@
 import pygame.font
 
+
 class Button():
 
     def __init__(self, ai_settings, screen, msg):
@@ -19,3 +20,9 @@ class Button():
 
         # 按钮标签只需创建一次
         self.prep_msg(msg)
+
+    def prep_msg(self, msg):
+        """将msg渲染为图像，并在按钮上剧中"""
+        self.msg_image = self.font.render(msg, True, self.text_color, self.button_color)
+        self.msg_image_rect = self.msg_image.get_rect()
+        self.msg_image_rect.center = self.rect.center
