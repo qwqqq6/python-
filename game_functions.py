@@ -2,6 +2,7 @@ import sys
 import pygame
 from bullet import Bullet
 from alien import Alien
+from time import sleep
 
 
 def check_events(ai_settings, screen, ship, bullets):
@@ -106,13 +107,13 @@ def get_number_rows(ai_settings, ship_height, alien_height):
     return number_rows
 
 
-def update_aliens(ai_settings, ship,  aliens):
+def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
 
     # 检测外星人与飞船的碰撞
     if pygame.sprite.spritecollideany(ship, aliens):
-        print("ship hit")
+        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
 
 
 def check_fleet_edges(ai_settings, aliens):
@@ -128,3 +129,18 @@ def change_fleet_direction(ai_settings, aliens):
     for alien in aliens.sprites():
         alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
+
+
+def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+    stats.ship_left -= 1
+
+    # 清空外星人和子弹
+    aliens.empty()
+    bullets.empty()
+
+    # 创建新的外星人并开始游戏
+    create_fleet(ai_settings, screen, ship, aliens)
+    ship.center_ship()
+
+    # 暂停
+    sleep(1)
