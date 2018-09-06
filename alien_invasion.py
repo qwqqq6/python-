@@ -4,7 +4,7 @@ from setting import Settings
 from ship import  Ship
 import game_functions as gf
 from pygame.sprite import Group
-form game_stats import GameStase
+from game_stats import GameStats
 
 def run_game():
     # 初始化
@@ -13,6 +13,7 @@ def run_game():
     screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
 
+    stats = GameStats(ai_settings)
     ship = Ship(ai_settings, screen)
     bullets = Group()
     aliens = Group()
